@@ -3,7 +3,14 @@ import {
     loginUser, 
     logoutUser, 
     registerUser,
-    refreshAccessToken
+    refreshAccessToken,
+    getCurrentUser,
+    updateAccountDetails,
+    updateUserAvatar,
+    updateUserCoverImage,
+    changeCurrentPassword,
+    getUserChannelProfile,
+    getWatchHistory
 
 } from "../controllers/user.controller.js";
 import {upload} from "../middlewares/multer.middleware.js"
@@ -29,7 +36,14 @@ upload.fields([
     // secured routes
     router.route("/logout").post(verifyJWT,logoutUser)
     router.route("/refresh-token").post(refreshAccessToken)
+    router.route("/change-password").post(verifyJWT,changeCurrentPassword)
+    router.route("/update-account").post(verifyJWT,updateAccountDetails)
 
+    router.route("/avatar").post(verifyJWT, upload.single("avatar"),updateUserAvatar)
+    router.route("/cover-image").post(verifyJWT, upload.single("coverImage"),updateUserCoverImage)
+
+    router.route("/c/:username").get(verifyJWT,getUserChannelProfile)
+    router.route("/history").get(verifyJWT,getWatchHistory)
 
 
 export default router
